@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Annah Mueni Muuo — Language Specialist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1510;
+      --parchment: #f5f0e8;
+      --warm: #c8a96e;
+      --accent: #8b4513;
+      --muted: #6b5d4f;
+      --light: #e8dfd0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--parchment);
+      color: var(--ink);
+      font-family: 'Cormorant Garamond', serif;
+      overflow-x: hidden;
+    }
+
+    /* Noise texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 3rem;
+      background: rgba(245,240,232,0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(200,169,110,0.2);
+    }
+
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 3rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: 'LANGUAGE';
+      position: absolute;
+      right: -2rem;
+      top: 50%;
+      transform: translateY(-50%) rotate(90deg);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10rem;
+      font-weight: 300;
+      color: rgba(200,169,110,0.08);
+      letter-spacing: 0.3em;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .hero-text { padding-right: 3rem; }
+
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--warm);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
+
+    .hero-name {
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.4s;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-tagline {
+      font-size: 1.4rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 3rem;
+      max-width: 420px;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.6s;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2rem;
+      background: var(--ink);
+      color: var(--parchment);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.3s;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.8s;
+    }
+
+    .hero-cta:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .hero-cta-arrow { font-size: 1rem; }
+
+    .hero-visual {
+      position: relative;
+      height: 520px;
+      opacity: 0;
+      animation: fadeIn 1.2s ease forwards 0.5s;
+    }
+
+    .hero-card {
+      position: absolute;
+      background: var(--ink);
+      color: var(--parchment);
+      padding: 3rem;
+      width: 340px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .hero-card-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--warm);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-card-title {
+      font-size: 1.6rem;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.4;
+      margin-bottom: 2rem;
+    }
+
+    .hero-card-langs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .lang-tag {
+      padding: 0.3rem 0.8rem;
+      border: 1px solid rgba(200,169,110,0.4);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--warm);
+    }
+
+    .hero-card-accent {
+      position: absolute;
+      width: 340px;
+      height: 100%;
+      border: 1px solid var(--warm);
+      top: 1rem;
+      left: calc(50% - 340px/2 + 1rem);
+      pointer-events: none;
+    }
+
+    /* ── SECTION BASE ── */
+    section {
+      padding: 6rem 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--warm);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-label::after {
+      content: '';
+      display: block;
+      height: 1px;
+      width: 60px;
+      background: var(--warm);
+      opacity: 0.4;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 3rem;
+    }
+
+    .section-title em { font-style: italic; color: var(--accent); }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      font-size: 1.25rem;
+      font-weight: 300;
+      line-height: 1.9;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .about-text p strong {
+      color: var(--ink);
+      font-weight: 400;
+    }
+
+    .about-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .stat-item {
+      padding: 2rem;
+      border: 1px solid var(--light);
+      position: relative;
+      transition: border-color 0.3s;
+    }
+
+    .stat-item:hover { border-color: var(--warm); }
+
+    .stat-number {
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── SERVICES ── */
+    .services-bg {
+      background: var(--ink);
+      max-width: 100%;
+      padding: 6rem 0;
+    }
+
+    .services-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 3rem;
+    }
+
+    .services-bg .section-label { color: var(--warm); }
+    .services-bg .section-title { color: var(--parchment); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: rgba(200,169,110,0.15);
+    }
+
+    .service-card {
+      background: var(--ink);
+      padding: 3rem;
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--warm);
+      transition: width 0.4s ease;
+    }
+
+    .service-card:hover::before { width: 100%; }
+    .service-card:hover { background: rgba(200,169,110,0.05); }
+
+    .service-number {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--warm);
+      letter-spacing: 0.2em;
+      margin-bottom: 1.5rem;
+    }
+
+    .service-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .service-title {
+      font-size: 1.6rem;
+      font-weight: 300;
+      color: var(--parchment);
+      margin-bottom: 1rem;
+    }
+
+    .service-desc {
+      font-size: 1rem;
+      font-weight: 300;
+      color: rgba(245,240,232,0.55);
+      line-height: 1.8;
+    }
+
+    /* ── LANGUAGES ── */
+    .languages-section { border-top: 1px solid var(--light); }
+
+    .languages-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .language-card {
+      padding: 2.5rem 2rem;
+      border: 1px solid var(--light);
+      text-align: center;
+      transition: all 0.3s;
+      cursor: default;
+    }
+
+    .language-card:hover {
+      border-color: var(--warm);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(139,69,19,0.08);
+    }
+
+    .language-flag { font-size: 2.5rem; margin-bottom: 1rem; }
+
+    .language-name {
+      font-size: 1.4rem;
+      font-weight: 400;
+      margin-bottom: 0.3rem;
+    }
+
+    .language-level {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--warm);
+    }
+
+    /* ── CONTACT ── */
+    .contact-section {
+      text-align: center;
+      padding: 8rem 3rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .contact-section .section-label { justify-content: center; }
+    .contact-section .section-label::after { display: none; }
+
+    .contact-quote {
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--muted);
+      margin-bottom: 3rem;
+    }
+
+    .contact-email {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--warm);
+      padding-bottom: 0.25rem;
+      margin-bottom: 3rem;
+      transition: color 0.3s;
+    }
+
+    .contact-email:hover { color: var(--accent); }
+
+    .contact-socials {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .contact-socials a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .contact-socials a:hover { color: var(--accent); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--light);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    .footer-tag {
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--warm);
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--warm), transparent);
+      opacity: 0.3;
+      margin: 0 auto;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 7rem 1.5rem 4rem;
+        gap: 3rem;
+      }
+
+      .hero-text { padding-right: 0; }
+      .hero::after { display: none; }
+
+      .hero-visual { height: 320px; }
+      .hero-card { width: 280px; padding: 2rem; }
+      .hero-card-accent { display: none; }
+
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .languages-grid { grid-template-columns: repeat(2, 1fr); }
+
+      section { padding: 4rem 1.5rem; }
+      .services-inner { padding: 0 1.5rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-logo">AMM</span>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#languages">Languages</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-text">
+      <p class="hero-eyebrow">Language Specialist · Nairobi, Kenya</p>
+      <h1 class="hero-name">Annah<br>Mueni <em>Muuo</em></h1>
+      <p class="hero-tagline">Bridging worlds through words — transcription, writing, and translation with precision and care.</p>
+      <a href="#contact" class="hero-cta">Work with me <span class="hero-cta-arrow">→</span></a>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card-accent"></div>
+      <div class="hero-card">
+        <p class="hero-card-label">Specialisations</p>
+        <p class="hero-card-title">"Words carefully chosen, meaning faithfully kept."</p>
+        <div class="hero-card-langs">
+          <span class="lang-tag">Transcription</span>
+          <span class="lang-tag">Writing</span>
+          <span class="lang-tag">Translation</span>
+          <span class="lang-tag">Editing</span>
+          <span class="lang-tag">Proofreading</span>
+          <span class="lang-tag">Localization</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label">About me</p>
+    <h2 class="section-title">A specialist who lives<br>and breathes <em>language</em></h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I am <strong>Annah Mueni Muuo</strong>, a Nairobi-based freelance language professional with a deep passion for the written and spoken word. My work sits at the intersection of precision and creativity — ensuring every document, transcript, and translation is not just accurate, but alive.</p>
+        <p>Whether you need a <strong>flawlessly transcribed interview</strong>, a <strong>compellingly written article</strong>, or a <strong>nuanced translation</strong> that preserves tone and intent, I bring meticulous attention to detail and genuine love for language to every project.</p>
+        <p>I work with businesses, researchers, content creators, and individuals who understand that <strong>words matter</strong> — and that getting them right makes all the difference.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-item">
+          <div class="stat-number">4+</div>
+          <div class="stat-label">Core disciplines</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Freelance & independent</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">∞</div>
+          <div class="stat-label">Commitment to quality</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <div class="services-bg" id="services">
+    <div class="services-inner">
+      <p class="section-label">What I do</p>
+      <h2 class="section-title">Services</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <p class="service-number">01</p>
+          <div class="service-icon">🎙️</div>
+          <h3 class="service-title">Transcription</h3>
+          <p class="service-desc">Accurate, timely transcription of audio and video content — interviews, podcasts, meetings, lectures, and more. Verbatim or clean-read, tailored to your needs.</p>
+        </div>
+        <div class="service-card">
+          <p class="service-number">02</p>
+          <div class="service-icon">✍🏽</div>
+          <h3 class="service-title">Writing</h3>
+          <p class="service-desc">Compelling content across formats — articles, blog posts, reports, creative pieces, and professional copy. Words that inform, engage, and convert.</p>
+        </div>
+        <div class="service-card">
+          <p class="service-number">03</p>
+          <div class="service-icon">🌍</div>
+          <h3 class="service-title">Translation</h3>
+          <p class="service-desc">Faithful, culturally-aware translation that preserves voice and meaning. Documents, websites, creative content, and more — across multiple languages.</p>
+        </div>
+        <div class="service-card">
+          <p class="service-number">04</p>
+          <div class="service-icon">📖</div>
+          <h3 class="service-title">Language Specialist</h3>
+          <p class="service-desc">Editing, proofreading, localization, and linguistic consulting. I help your content feel natural, polished, and perfectly suited to your audience.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LANGUAGES -->
+  <section id="languages" class="languages-section">
+    <p class="section-label">Linguistic range</p>
+    <h2 class="section-title">Languages I work <em>with</em></h2>
+    <div class="languages-grid">
+      <div class="language-card">
+        <div class="language-flag">🇬🇧</div>
+        <div class="language-name">English</div>
+        <div class="language-level">Native / Expert</div>
+      </div>
+      <div class="language-card">
+        <div class="language-flag">🇰🇪</div>
+        <div class="language-name">Swahili</div>
+        <div class="language-level">Native / Expert</div>
+      </div>
+      <div class="language-card">
+        <div class="language-flag">🌍</div>
+        <div class="language-name">Kamba</div>
+        <div class="language-level">Native Speaker</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CONTACT -->
+  <div id="contact">
+    <div class="contact-section">
+      <p class="section-label">Get in touch</p>
+      <p class="contact-quote">"Every great piece of communication starts with a conversation. Let's start ours."</p>
+      <a href="mailto:anitaenbelpeter@gmail.com" class="contact-email">anitaenbelpeter@gmail.com</a>
+      <ul class="contact-socials">
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">Upwork</a></li>
+        <li><a href="#">Twitter / X</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-copy">© 2026 Annah Mueni Muuo. All rights reserved.</span>
+    <span class="footer-tag">Words with purpose.</span>
+  </footer>
+
+</body>
+</html>
